@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.example.demo.dao.TaskManagerRepo;
 import com.example.demo.entity.TaskManager;
+import com.example.demo.exception.TaskNotFoundException;
 
 @Service
 public class TaskManagerServiceImpl implements TaskManagerService
@@ -23,7 +24,8 @@ public class TaskManagerServiceImpl implements TaskManagerService
 
 	public TaskManager findById(Long id) {
 		// TODO Auto-generated method stub
-		return tm.findById(id).orElse(null);
+		return tm.findById(id)
+				.orElseThrow(() -> new TaskNotFoundException("The task object not found with the id :"+id));
 	}
 
 	
@@ -36,6 +38,10 @@ public class TaskManagerServiceImpl implements TaskManagerService
 	
 	public void deleteById(Long id) {
 		// TODO Auto-generated method stub
+		TaskManager task = tm.findById(id)
+		        .orElseThrow(() -> new TaskNotFoundException(
+		            "The task object not found with the id :" + id
+		        ));
 		tm.deleteById(id);
 	}
 
