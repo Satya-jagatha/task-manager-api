@@ -2,6 +2,7 @@ package com.example.demo.exception;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
@@ -33,6 +34,25 @@ public class GlobalExceptionHandler
 		
 		return new ResponseEntity<>(error, HttpStatus.INTERNAL_SERVER_ERROR);
 		
+	}
+	
+	@ExceptionHandler(MethodArgumentNotValidException.class)
+	ResponseEntity<ApiError> handleMethodArgumentNotValidException(MethodArgumentNotValidException ex, HttpServletRequest request)
+	{
+		String errorMessage = ex.getBindingResult()
+	            .getFieldErrors()
+	            .stream()
+	            .map(err -> err.getField() + ": " + err.getDefaultMessage())
+	            .findFirst()
+	            .orElse("Validation failed");
+		ApiError error = new ApiError();
+		
+		error.setStatus(HttpStatus.BAD_REQUEST.value());
+		error.setError(HttpStatus.BAD_REQUEST.name());
+		error.setMessage(errorMessage);
+		error.setPath(request.getRequestURI());
+		
+		return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
 	}
 
 }

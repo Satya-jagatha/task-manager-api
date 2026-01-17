@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.example.demo.entity.TaskManager;
 import com.example.demo.service.TaskManagerService;
 
+import jakarta.validation.Valid;
+
 @RestController
 @RequestMapping("/task")
 public class TaskManagerController 
@@ -35,14 +37,14 @@ public class TaskManagerController
 	}
 	
 	@PostMapping("/save")
-	public TaskManager save(@RequestBody TaskManager t)
+	public TaskManager save(@Valid @RequestBody TaskManager t)
 	{
 		tm.SaveOrUpdate(t);
 		return t;
 	}
 	
 	@PutMapping("/update")
-	public TaskManager update(@RequestBody TaskManager t)
+	public TaskManager update(@Valid @RequestBody TaskManager t)
 	{
 		tm.SaveOrUpdate(t);
 		return t;

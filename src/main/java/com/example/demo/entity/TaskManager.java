@@ -7,6 +7,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.PrePersist;
+import jakarta.validation.constraints.NotBlank;
 
 @Entity
 public class TaskManager 
@@ -14,8 +15,13 @@ public class TaskManager
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
+	
+	@NotBlank(message="title cannot be blank:")
 	private String title;
+	
+	@NotBlank(message="status cannot be blank:")
 	private String status;
+	
 	private LocalDateTime createdAt;
 	
 	public TaskManager() {
