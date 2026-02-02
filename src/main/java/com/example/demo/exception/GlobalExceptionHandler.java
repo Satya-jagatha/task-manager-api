@@ -23,6 +23,31 @@ public class GlobalExceptionHandler
 		
 	}
 	
+	@ExceptionHandler(InvalidTokenException.class)
+	ResponseEntity<ApiError> handleInvalidTokenException(InvalidTokenException ex, HttpServletRequest request)
+	{
+		ApiError error = new ApiError();
+		error.setStatus(HttpStatus.FORBIDDEN.value());
+		error.setError(HttpStatus.FORBIDDEN.name());
+		error.setMessage(ex.getMessage());
+		error.setPath(request.getRequestURI());
+		
+		return new ResponseEntity<>(error,HttpStatus.FORBIDDEN);
+	}
+	
+	@ExceptionHandler(InvalidCredentialsException.class)
+	ResponseEntity<ApiError> handleInvalidCredentialsException(InvalidCredentialsException ex, HttpServletRequest request)
+	{
+		ApiError error = new ApiError();
+		error.setStatus(HttpStatus.UNAUTHORIZED.value());
+		error.setError(HttpStatus.UNAUTHORIZED.name());
+		error.setMessage(ex.getMessage());
+		error.setPath(request.getRequestURI());
+		
+		return new ResponseEntity<>(error,HttpStatus.UNAUTHORIZED);
+				
+	}
+	
 	@ExceptionHandler(Exception.class)
 	ResponseEntity<ApiError> handleGenericExcpetion(Exception ex, HttpServletRequest request)
 	{
