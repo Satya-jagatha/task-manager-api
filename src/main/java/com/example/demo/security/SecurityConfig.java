@@ -21,9 +21,11 @@ public class SecurityConfig
 	public SecurityFilterChain filterchain(HttpSecurity http) throws Exception
 	{
 		http
-        .csrf(csrf -> csrf.disable())
+		.csrf(csrf -> csrf.disable())
+        //.cors(cors -> cors.configurationSource(corsConfigurationSource()))
         .authorizeHttpRequests(auth -> auth
-            .anyRequest().permitAll()
+            .requestMatchers("/auth/login").permitAll()
+            .anyRequest().authenticated()
         )
         .sessionManagement(sess -> sess
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)

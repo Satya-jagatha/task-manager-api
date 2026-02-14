@@ -14,11 +14,11 @@ import io.jsonwebtoken.security.Keys;
 @Component
 public class JwtUtil 
 {
-	@Value("$jwt.secret")
+	@Value("${jwt.secret}")
 	private String secret;
-	
-	@Value("$jwt.expiration")
-	private String expiration;
+
+	@Value("${jwt.expiration}")
+	private long expiration;
 	
 	public String GenerateToken(String username)
 	{
